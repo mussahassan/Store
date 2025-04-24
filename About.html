@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About - GalaxyTech</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --text: #222;
+      --card: #fff;
+      --accent: #ff6a00;
+    }
+    body.dark {
+      --bg: #121212;
+      --text: #f0f0f0;
+      --card: #1e1e1e;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 60px;
+    }
+    header {
+      background: var(--card);
+      padding: 15px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .about-container {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 10px;
+    }
+    p {
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.8em;
+      color: #666;
+      text-decoration: none;
+    }
+    .bottom-nav-item.active {
+      color: var(--accent);
+    }
+    .bottom-nav-item i {
+      font-size: 1.5em;
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>About GalaxyTech</h1>
+  </header>
+  <div class="about-container">
+    <p>GalaxyTech is your go-to destination for the latest smartphones and gadgets. We specialize in affordable, high-quality tech curated to fit your lifestyle and budget.</p>
+    <p>From product sourcing to customer service, we handle everything with passion and precision. Our team believes in innovation, reliability, and that bold, unapologetic grind toward the future.</p>
+    <p>Join the Galaxy. We’re not just a tech shop — we’re building a movement.</p>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="index.html" class="bottom-nav-item home">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="about.html" class="bottom-nav-item active">
+      <i class="fas fa-info-circle"></i>
+      <span>About</span>
+    </a>
+    <a href="contact.html" class="bottom-nav-item">
+      <i class="fas fa-envelope"></i>
+      <span>Contact</span>
+    </a>
+  </div>
+
+  <script>
+    // Dark mode persistence (optional beast mode UX)
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+    }
+  </script>
+</body>
+</html>

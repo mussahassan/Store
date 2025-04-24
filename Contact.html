@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #121212;
+      color: #f0f0f0;
+      padding: 2rem;
+    }
+    form {
+      max-width: 400px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    input, textarea {
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #1e1e1e;
+      color: #fff;
+    }
+    button {
+      padding: 10px;
+      background: #ff6a00;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .message {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+      font-size: 0.9em;
+    }
+    .message.success {
+      background: #1e3d1e;
+      color: #00ff00;
+    }
+    .message.error {
+      background: #3d1e1e;
+      color: #ff3333;
+    }
+    .message img {
+      width: 16px;
+      height: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Contact Us</h2>
+  <form id="contactForm">
+    <input type="text" id="name" placeholder="Your Name" />
+    <input type="email" id="email" placeholder="Your Email" />
+    <textarea id="message" rows="5" placeholder="Your Message"></textarea>
+    <button type="submit">Send</button>
+    <div id="responseBox"></div>
+  </form>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const responseBox = document.getElementById('responseBox');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !message) {
+        responseBox.innerHTML = `
+          <div class="message error">
+            <img src="https://img.icons8.com/ios-filled/50/fa314a/x.png"/>
+            Please fill every part.
+          </div>`;
+        return;
+      }
+
+      fetch("https://script.google.com/macros/s/AKfycbyeueov0pN_Ls7BijWZLS4dKuMtY9jqFziObKJlZoqrgFhXLyCxeuir3AF93m8YUaf4/exec", {
+        method: "POST",
+        body: new URLSearchParams({
+          "Ujumbe": name,
+          "Email": email,
+          "Message": message
+        })
+      })
+      .then(res => res.text())
+      .then(() => {
+        responseBox.innerHTML = `
+          <div class="message success">
+            <img src="https://img.icons8.com/ios-filled/50/00ff00/checkmark.png"/>
+            Message sent successfully.
+          </div>`;
+        form.reset();
+      })
+      .catch(() => {
+        responseBox.innerHTML = `
+          <div class="message error">
+            <img src="https://img.icons8.com/ios-filled/50/fa314a/x.png"/>
+            Failed to send. Try again later.
+          </div>`;
+      });
+    });
+  </script>
+</body>
+</html>

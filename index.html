@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GalaxyTech - Phones</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --text: #222;
+      --card: #fff;
+      --accent: #ff6a00;
+    }
+    body.dark {
+      --bg: #121212;
+      --text: #f0f0f0;
+      --card: #1e1e1e;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+    .header-bar {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: var(--card);
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .sidebar-toggle {
+      font-size: 1.5em;
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+    }
+    .search-box {
+      flex: 1;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 8px 35px 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-box i {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+    }
+    .banner {
+      width: 100%;
+      overflow: hidden;
+      height: 200px;
+    }
+    .banner-inner {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .banner-inner img {
+      width: 100vw;
+      height: 200px;
+      object-fit: cover;
+      object-position: center;
+    }
+    .banner-dots {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: var(--card);
+    }
+    .dropdown-container select {
+      padding: 8px;
+      font-size: 1em;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background: white;
+    }
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: var(--accent);
+    }
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 200px;
+      background: var(--card);
+      padding: 15px;
+      border-right: 1px solid #eee;
+      overflow-y: auto;
+      display: none;
+      flex-direction: column;
+    }
+    .sidebar.active {
+      display: flex;
+    }
+    .main-content {
+      flex: 1;
+      padding: 15px;
+    }
+    .section-title {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 15px;
+    }
+    .product {
+      background: var(--card);
+      border-radius: 6px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .product img {
+      width: 100%;
+      border-radius: 4px;
+      height: 120px;
+      object-fit: cover;
+      object-position: center;
+      background: #f9f9f9;
+    }
+    .product h2 {
+      margin: 10px 0 5px;
+      font-size: 1em;
+    }
+    .product-price {
+      font-weight: bold;
+      color: var(--accent);
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.8em;
+      color: #666;
+      text-decoration: none;
+    }
+    .bottom-nav-item.active {
+      color: var(--accent);
+    }
+    .bottom-nav-item i {
+      font-size: 1.5em;
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header-bar">
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="search-box">
+      <input type="search" id="searchInput" placeholder="Search products...">
+      <i class="fas fa-search"></i>
+    </div>
+  </header>
+  
+  <div class="banner">
+    <div class="banner-inner" id="bannerInner"></div>
+    <div class="banner-dots" id="bannerDots"></div>
+  </div>
+  
+  <div class="controls-bar">
+    <div class="dropdown-container">
+      <select id="sortFilter">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+      </select>
+    </div>
+    <div class="theme-toggle">
+      <label class="switch">
+        <input type="checkbox" id="themeSwitch">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="sidebar" id="sidebar"></div>
+    <div class="main-content">
+      <div class="section-title">Our Products</div>
+      <div class="section-grid" id="products"></div>
+    </div>
+  </div>
+  
+  <div class="bottom-nav">
+    <a href="#" class="bottom-nav-item home active" id="homeButton">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="about.html" class="bottom-nav-item">
+      <i class="fas fa-info-circle"></i>
+      <span>About</span>
+    </a>
+    <a href="contact.html" class="bottom-nav-item">
+      <i class="fas fa-envelope"></i>
+      <span>Contact</span>
+    </a>
+  </div>
+
+  <script>
+    let allProducts = [];
+    const categorySet = new Set();
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('active');
+    }
+
+    function renderProducts() {
+      const container = document.getElementById("products");
+      container.innerHTML = '';
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const sort = document.getElementById('sortFilter').value;
+      const activeCategory = document.querySelector('.sidebar .active')?.textContent.toLowerCase().trim();
+
+      // Always start from allProducts
+      let filtered = allProducts;
+
+      // Search first across all products (no category filter for search)
+      if (search) {
+        filtered = filtered.filter(p => p.Name.toLowerCase().includes(search) || p.Description.toLowerCase().includes(search));
+      }
+
+      // Then filter by category if one is selected
+      if (activeCategory && activeCategory !== 'all') {
+        filtered = filtered.filter(p => p.Category.toLowerCase().trim() === activeCategory);
+      }
+
+      // Sort
+      if (sort === 'low') filtered.sort((a,b) => a.Price - b.Price);
+      if (sort === 'high') filtered.sort((a,b) => b.Price - a.Price);
+      if (sort === 'oldest') filtered.sort((a,b) => new Date(a.Date) - new Date(b.Date));
+      if (sort === 'newest') filtered.sort((a,b) => new Date(b.Date) - new Date(a.Date));
+
+      // Render
+      filtered.forEach(item => {
+        container.innerHTML += `
+          <div class="product">
+            <img src="${item.Image}" alt="${item.Name}">
+            <h2>${item.Name}</h2>
+            <p class="product-price">TSh ${item.Price}</p>
+            <p>${item.Description}</p>
+          </div>`;
+      });
+    }
+
+    function renderSidebarCategories() {
+      const sidebar = document.getElementById('sidebar');
+      const categories = ['All', ...Array.from(categorySet)];
+      sidebar.innerHTML = categories.map(cat => `<div onclick="selectCategory(this)" style="cursor:pointer;padding:8px;border-bottom:1px solid #eee;">${cat}</div>`).join('');
+    }
+
+    function selectCategory(el) {
+      document.querySelectorAll('#sidebar div').forEach(d => d.classList.remove('active'));
+      el.classList.add('active');
+      renderProducts();
+      toggleSidebar(); // Close sidebar when category is selected
+    }
+
+    function showAllProducts() {
+      const sidebar = document.getElementById('sidebar');
+      const allCategory = sidebar.querySelector('div'); // First item (All category)
+      document.querySelectorAll('#sidebar div').forEach(d => d.classList.remove('active'));
+      allCategory.classList.add('active');
+      renderProducts();
+      toggleSidebar();
+    }
+
+    // Event listener for Home button
+    document.getElementById('homeButton').addEventListener('click', showAllProducts);
+
+    fetch('https://opensheet.elk.sh/19fqbOKD2M-05ATBHu6itScV68hFueXdzsFcVu98bobg/Products')
+      .then(res => res.json())
+      .then(data => {
+        allProducts = data;
+        data.forEach(p => categorySet.add(p.Category));
+        renderSidebarCategories();
+        document.querySelector('#sidebar div')?.classList.add('active');
+        renderProducts();
+      });
+
+    document.getElementById('searchInput').addEventListener('input', renderProducts);
+    document.getElementById('sortFilter').addEventListener('change', renderProducts);
+
+    document.getElementById('themeSwitch').addEventListener('change', e => {
+      document.body.classList.toggle('dark', e.target.checked);
+    });
+
+    fetch('https://opensheet.elk.sh/19fqbOKD2M-05ATBHu6itScV68hFueXdzsFcVu98bobg/Tangazo')
+      .then(res => res.json())
+      .then(banners => {
+        const inner = document.getElementById('bannerInner');
+        const dots = document.getElementById('bannerDots');
+        banners.forEach((b, i) => {
+          inner.innerHTML += `<img src="${b.Tangazo}" alt="Banner ${i+1}">`;
+          dots.innerHTML += `<span style="display:inline-block;width:10px;height:10px;background:${i===0?'#FF6A00':'#ccc'};margin:0 4px;border-radius:50%;"></span>`;
+        });
+        let index = 0;
+        setInterval(() => {
+          index = (index + 1) % banners.length;
+          inner.style.transform = `translateX(-${index * 100}vw)`;
+          dots.querySelectorAll('span').forEach((d, i) => d.style.background = i === index ? '#FF6A00' : '#ccc');
+        }, 4000);
+      });
+  </script>
+</body>
+</html>
